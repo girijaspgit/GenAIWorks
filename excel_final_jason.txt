@@ -1,0 +1,35 @@
+import pandas as pd
+import json
+import os
+
+def xls_to_json_collection(file_path, output_dir="output_json"):
+    try:
+        # Read all sheets from the XLS file
+        xls = pd.read_excel(file_path, sheet_name=None)
+
+        # Create output directory if it doesn't exist
+        os.makedirs(output_dir, exist_ok=True)
+
+        # File name without extension to use as collection name
+        collection_name = os.path.splitext(os.path.basename(file_path))[0]
+        collection = {}
+
+        for sheet_name, df in xls.items():
+            # Convert DataFrame to JSON records
+            sheet_data = df.fillna("").to_dict(orient='records')
+            collection[sheet_name] = sheet_data
+
+        # Save the full collection as a single JSON file
+        output_path = os.path.join(output_dir, f"{collection_name}.json")
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(collection, f, indent=4, ensure_ascii=False)
+
+        print(f"✅ JSON saved to: {output_path}")
+
+    except Exception as e:
+        print(f"❌ Error reading Excel file: {e}")
+
+
+# Example usage
+xls_file_path = r"C:\AI_Learning\example_multisheet.xls"  # Replace with your file path
+xls_to_json_collection(xls_file_path)
