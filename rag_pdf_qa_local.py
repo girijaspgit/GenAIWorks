@@ -53,5 +53,10 @@ def ask_question(question):
 
 # Example questions
 if __name__ == "__main__":
-    ask_question("What is the main topic of the PDF?")
-    ask_question("Can you summarize the key points in the document?")
+    print("\nPDF QA Chat. Type your question and press Enter. Type 'exit' to quit.\n")
+    while True:
+        question = input("Your question: ")
+        if question.strip().lower() == 'exit':
+            print("Exiting. Goodbye!")
+            break
+        ask_question(question)
